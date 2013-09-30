@@ -1,0 +1,84 @@
+
+**PMOS Example
+
+V1 vdd 0 5V
+V2 vss 0 0v
+V3 in vss pulse(0 3 0 100p 100p 1.9n 4n)
+
+R1 in vin 10k
+R2 out 0 4k
+
+Mp1 out vin vdd vdd pch l=0.35u w=20.0u
+
+.MODEL pch PMOS
++Level = 49
++Lint = 3.e-08		Tox = 4.2e-09 
++Vth0 = -0.4		Rdsw = 450 
++lmin=1.8e-7 		lmax=1.8e-7 	
++wmin=1.8e-7 		wmax=1.0e-4 	
++version =3.1		Xj= 7.0000000E-08         
++Nch= 5.9200000E+17 	lln= 1.0000000            
++lwn= 1.0000000       	wln= 0.00
++wwn= 0.00              ll= 0.00
++lw= 0.00               lwl= 0.00                   
++wint= 0.00		wl= 0.00                  
++ww= 0.00               wwl= 0.00
++Mobmod=1             	binunit= 2                                    
++Dwg= 0.00              Dwb= 0.00 
++hdif=0.00		rsh= 0 
++K1= 0.5560000          K2= 0.00 
++K3= 0.00               Dvt0= 11.2000000            
++Dvt1= 0.7200000	Dvt2= -1.0000000E-02      
++Dvt0w= 0.00            Dvt1w= 0.00 
++Dvt2w= 0.00            Nlx= 9.5000000E-08          
++W0= 0.00 		K3b= 0.00                 
++Ngate= 5.0000000E+20 
++Vsat= 1.0500000E+05    Ua= -1.2000000E-10          
++Ub= 1.0000000E-18 
++Uc= -2.9999999E-11     Prwb= 0.00 
++Prwg= 0.00             Wr= 1.0000000               
++U0= 8.0000000E-03 	A0= 2.1199999             
++Keta= 2.9999999E-02    A1= 0.00 
++A2= 0.4000000          Ags= -0.1000000             
++B0= 0.00		B1= 0.00 
++Voff= -6.40000000E-02      NFactor= 1.4000000          
++Cit= 0.00 		Cdsc= 0.00                
++Cdscb= 0.00            Cdscd= 0.00 
++Eta0= 8.5000000        Etab= 0.00                  
++Dsub= 2.8000000 	Pclm= 2.0000000           
++Pdiblc1= 0.1200000     Pdiblc2= 8.0000000E-05 
++Pdiblcb= 0.1450000     Drout= 5.0000000E-02        
++Pscbe1= 1.0000000E-20 
++Pscbe2= 1.0000000E-20     Pvag= -6.0000000E-02        
++Delta= 1.0000000E-02 
++Alpha0= 0.00              Beta0= 30.0000000 
++kt1= -0.3700000           kt2= -4.0000000E-02         
++At= 5.5000000E+04	   Ute= -1.4800000           
++Ua1= 9.5829000E-10        Ub1= -3.3473000E-19 
++Uc1= 0.00                 Kt1l= 4.0000000E-09         
++Prt= 0.00 
+
+.CONTROL
+
+.option noopalter 
+
+let mc_runs = 10
+let run = 0
+set curplot = new
+set curplottitle = "ig vs vgs plot"
+set plot_out = $curplot
+
+set p1vth0=@p1[vth0]
+dowhile run <= mc_runs
+
+if run > 0
+altermod @p1[vth0]=gauss($p1vth0, 0.1, 3)
+end 
+tran .1n 200n
+run
+plot {$plot_out}.vout0
+.ENDC
+
+
+.END
+

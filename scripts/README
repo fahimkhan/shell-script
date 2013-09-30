@@ -1,0 +1,399 @@
+It contain example of shell script.
+
+Here are some expl. on shell command
+
+cat test random > sample  ##To copy content of test and random into sample file.
+ 
+rm -r test  ###remove directory
+
+rmdir test ### Remove directory
+
+### Softlink and Hardlink
+
+##To create Hardlink between file
+
+ln old new   ###Any changes in old will be reflected in new
+
+####Softlink
+
+ln -s old old_soft ## If old file is remove then old_soft is of no use.Its Pointer
+
+###File Permission
+
+r-4 w-2 x-1
+
+owner-group-user
+
+You can use unmask command to see default permission. Its 666-unmask for file
+And 777-unmask for directory.
+
+### ls command
+After ls -l we can see 'total 76' i.e 76 block allocated one block is 1024bytes
+
+### Create hidden file
+
+touch .hidden
+
+### To know about system info
+
+uname -a
+
+#### To see file and folder in home directory
+
+file *
+
+Actually * nothing but all in current directory
+
+### wc
+
+wc test
+6  28 120 test 
+Number of line word charcter
+
+wc -w test ## fro num of word
+
+wc -c test ## for num of character
+
+
+##### sort
+
+sort animal   ### Output in alphabatic order
+
+### cut command
+
+cut -d'-' -f 1,3 player
+
+### dd command for conversion
+
+dd if=test of=out_test conv=ucase  ## to convert from lower case to upper case
+
+Also u can use dd for extract,installation from pen drive,format,file conversion and many more
+
+### Banner command to generate fancy output
+
+banner I am good   ## Space is new line
+banner "I am good"  ### in same line  but 10 character per line
+
+
+### Compress command
+
+compress -v filename  ## File filename.z will be created and to open it use zcat
+
+#### Uncomress command
+
+uncompress filename
+
+
+### To set positional parameter
+set Youtube is good site
+
+the $1 is Youtube, $2 is,$3 good,$4 site and so on
+
+We can use file content also with reverse comma like
+
+set `cat test`
+set `who am i`
+
+#####Number of positional param
+
+$#
+
+
+########expr and bc
+
+echo `expr $a + $b`
+
+e = `echo $a + $b|bc`
+echo $e
+	
+##Escape Sequence
+
+\n   new line
+\r   remove garbage i.e delete before it.
+\t   give 5 space
+\b   delete backspace char. For multiple delete use \b again and again
+
+
+
+## tput command
+
+tput clear 
+tput lines
+tput cup 15 20
+
+
+###status of previouse command
+
+$?
+
+
+
+####if else
+
+if [ -f $file ]   ##check for file and -d for directory,-s for size of file > than zero
+then
+echo "file present"
+else 
+echo"wrong file name"
+ 
+##String checks
+
+[ "$str1" = "$str2" ]
+
+[ "str1" != "$str2" ]
+
+[ -n "$str1" ]  ##lenght is greater than zero
+ 
+[ -z "$str3"]  ### Size is null or not
+
+#### Logical operator
+
+-a  ## And operator
+
+if [ $num -le 100 -a $num -ge 50 ]
+
+-o ## Or operator
+
+#### until loop
+
+run when condition is false
+
+until [  ]
+do
+done
+
+#### grep
+To find pattern in text file
+
+grep -i money lyrics  ## i is for case insensitive
+grep -i -n money lyrics ## n is for with line number
+grep -c Money lyrics  ## for total number of output
+grep -v Money lyrics  ## gives that donot have money
+
+###content of passwd file in /etc/passwd
+
+Total 7 field
+
+1-user name
+2-encrypted passwd even in shadow file it is encrypted
+3-uid
+4-group id
+5-name of computer
+6-home folder
+7-default shell
+
+### ifs internal field seperator
+
+line="Shell:Scripting:is:fun"
+IFS=:  ## IFS in upper case
+set $line
+echo $1
+echo $2
+echo $3
+echo $4
+
+#### command tty
+tty ## gives current terminal setting
+
+### sleep command to provide delay
+
+sleep x  ## x is number in seconds
+
+for more info look at sleep.sh
+
+
+###count number of sentence and word in text file
+see count_adv.sh
+
+##Fetch and redirct man pages of command
+
+see help.sh
+
+
+## break statement
+It forces the loop to stop working
+Control shift to first statement outside loop
+
+## Continue statement
+It shift control to start of loop
+
+
+## Metacharacter
+
+; -> To execute more than one command in a line
+
+ls;cal;echo hello
+
+&&  -> to execute second if first completed
+grep  money lyrics > lyrics_test && echo "task completed"
+
+
+### Adding and removing user from gui and command
+##Added
+sudo adduser newuser
+
+##Deleted
+sudo rm -rf /home/newuse
+
+##login
+
+su username   ##wont show in who
+or
+sudo login    ##Show in who
+
+
+### For advance login time detail see advance_login.sh,more_adv_login.sh
+
+## Communicate with other user using write
+
+write username   ## to communicate
+mesg y 		## To enable communicattion
+finger		##To find who disable communication with u.User with * is one.
+
+
+##Create your own user using function
+
+see func.sh
+first create your script with function
+then make it executable
+then type
+	. scrtpt.sh
+then u can use your function inside script as command
+
+to remove function use
+unset function_name
+
+###To run multiple Script
+
+To run multiple script call it from within script
+
+####CronTab
+
+crontab -l 	##list user cron table
+crontab -e 	##Create new cron table
+crontab -r 	##Remove cron table and all schedule job
+
+cron table has following structure
+
+1 2 3 4 5 Command
+
+1 = minute(0-59)
+2 = hour(24 hr format 0-23)
+3 = day of month (1-31)
+4 = month of year(1-12)
+5 = day of week (0 or 7 sunday) (1-6 Mon-Sat)
+
+Note: /etc/cron.allow and /etc/cron.deny control who can and cannot use cron
+==============================================================================================================================================
+## Find Command
+find where-to-look criteria what-to-do
+
+####This will search the whole system for any files named foo and display their pathnames.
+Here we are using the criterion -name with the argument foo to tell find to perform a name search for the filename foo.
+
+find / -name foo
+
+####You can specify as many places to search as you wish: 
+
+find /tmp /var/tmp . $HOME -name foo
+
+####Modified file
+find . -mtime 1  (find all the files modified exact 1 day)
+
+find . -mtime -1 (find all the files modified less than 1 day)
+
+find . -mtime +1 (find all the files modified more than 1 day)
+
+### File with permission
+find –perm option is used to find files based upon permissions. 
+
+find . -perm 644
+
+###Case insensitive search using find in Unix
+
+find . –iname "error" –print ( -i is for ignore )
+
+###How to delete temporary files using find command in Unix?
+
+find . -name "*.tmp" -print | xargs rm –f
+
+###How to find all text file which contains word Exception using find command in Unix ?
+
+
+find . –name "*.txt" –print | xargs grep "Exception"
+
+#### Finding files only in current directory not searching on sub directories:
+
+find . -maxdepth 1 -type f -newer first_file
+
+find . -type f -cmin 15 -prune
+
+### How to find files based on size in Unix and Linux
+
+find . -size +1000c -exec ls -l {} \;
+
+
+Always use a c after the number, and specify the size in bytes, otherwise you will get confuse because find -size list files based on size
+of disk block. to find files using a range of file sizes, a minus or plus sign can be specified before the number. 
+The minus sign means "less than," and the plus sign means "greater than." Suppose if you want to find all the files within a range you can use find command as in below example of find:
+
+find . -size +10000c -size -50000c -print
+
+#########You can use "awk" in combination of find to print a formatted output
+e.g. next command will find all of the symbolic links in your home directory, and print the files your symbolic links points to:
+
+find . -type l -print | xargs ls -ld | awk '{print $10}'
+
+#####To find lenght of string
+x="welcome"
+echo ${#x}
+
+### How to get the list of files alone in a directory in Linux?
+
+ ls -lrt | grep ^-
+
+#####How to find the last modified file or the newest file in a directory?
+
+ls -lrt | grep ^- | awk 'END{print $NF}'
+
+
+### How to find the sum of all numbers in a file in Linux?
+awk '{x+=$0}END{print x}' file
+
+####Using the grep command, how can you display or print the entire file contents?
+
+grep .* file
+
+	     
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
