@@ -128,8 +128,14 @@ compared are actually the right-margin columns.
 	awk ’NR % 2 == 0’ data
 	If you use the expression ‘NR % 2 == 1’ instead,the program would print the odd-number line
 
+#To run awk command in a file 
+
+awk -f filename
+
+#Write a command to print the second and third line of a file without using NR.
+awk 'BEGIN {RS="";FS="\n"} {print $2,$3}' filename
 
 
-
-
+#Write a command to rename the files in a directory with "_new" as postfix?
+ls -F | awk '{print "mv "$1" "$1".new"}' | sh
 
