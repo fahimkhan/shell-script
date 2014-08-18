@@ -1,6 +1,6 @@
 #!/bin/bash
 
-umask 755
+umask 777
 
 touch 1.txt
 touch 2.txt

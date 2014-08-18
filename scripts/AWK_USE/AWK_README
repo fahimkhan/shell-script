@@ -1,0 +1,135 @@
+
+###############Starting With AWK#############
+
+#Genearl Syntax
+
+awk 'program' file
+
+#We can also write it without a file
+
+awk 'program'  ##In that case u have type on terminal and to run it type ctrl+D
+----------------------------------------------------------------------------------------------------------------------------------------------
+##Using multiple line
+awk 'program' input-file1 input-file2 ...
+----------------------------------------------------------------------------------------------------------------------------------------------
+##Runing long program in case program is in your file
+
+awk -f sourcefile file1 file2 ...  # -f indicates that program is stored in sourcefile
+----------------------------------------------------------------------------------------------------------------------------------------------
+##Executable awk program
+
+#!/bin/awk -f
+
+BEGIN { print "Don’t Panic!" }
+
+##change it to executable file and run it
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+For short to medium length awk programs, it is most convenient to enter the program on the
+awk command line. This is best done by enclosing the entire program in single quotes. This
+is true whether you are entering the program interactively at the shell prompt, or writing
+it as part of a larger shell script:
+awk ’program text’ input-file1 input-file2 ...
+Once you are working with the shell, it is helpful to have a basic knowledge of shell
+quoting rules. The following rules apply only to POSIX-compliant, Bourne-style shells
+(such as Bash, the GNU Bourne-Again Shell). If you use the C shell, you’re on your own.
+• Quoted items can be concatenated with nonquoted items as well as with other quoted
+items. The shell turns everything into one argument for the command.
+• Preceding any single character with a backslash (‘\’) quotes that character. The shell
+removes the backslash and passes the quoted character on to the command.
+• Single quotes protect everything between the opening and closing quotes. The shell
+does no interpretation of the quoted text, passing it on verbatim to the command. It is
+impossible to embed a single quote inside single-quoted text. Refer back to Section 1.1.5
+[Comments in awk Programs], page 14, for an example of what happens if you try.
+• Double quotes protect most things between the opening and closing quotes. The shell
+does at least variable and command substitution on the quoted text. Different shells
+may do additional kinds of processing on double-quoted text.
+Since certain characters within double-quoted text are processed by the shell, they
+must be escaped within the text. Of note are the characters ‘$’, ‘‘’, ‘\’, and ‘"’, all
+of which must be preceded by a backslash within double-quoted text if they are to be
+passed on literally to the program. (The leading backslash is stripped first.) Thus, the
+example seen previously in Section 1.1.2 [Running awk Without Input Files], page 12,
+is applicable:
+$ awk "BEGIN { print \"Don’t Panic!\" }"
+Don’t Panic!
+Note that the single quote is not special within double quotes.
+• Null strings are removed when they occur as part of a non-null command-line argument,
+while explicit non-null objects are kept. For example, to specify that the field separator
+FS should be set to the null string, use:
+awk -F "" ’program’ files # correct
+Don’t use this:
+awk -F"" ’program’ files
+# wrong!
+In the second case, awk will attempt to use the text of the program as the value of FS,
+and the first file name as the text of the program! This results in syntax errors at best,
+and confusing behavior at worst.
+Mixing single and double quotes is difficult. You have to resort to shell quoting tricks,
+like this:
+$ awk ’BEGIN { print "Here is a single quote <’"’"’>" }’
+Here is a single quote <’>
+
+
+This program consists of three concatenated quoted strings. The first and the third are
+single-quoted, the second is double-quoted.
+This can be “simplified” to:
+$ awk ’BEGIN { print "Here is a single quote <’\’’>" }’
+Here is a single quote <’>
+Judge for yourself which of these two is the more readable.
+Another option is to use double quotes, escaping the embedded, awk-level double quotes:
+$ awk "BEGIN { print \"Here is a single quote <’>\" }"
+Here is a single quote <’>
+This option is also painful, because double quotes, backslashes, and dollar signs are very
+common in more advanced awk programs.
+A third option is to use the octal escape sequence equivalents (see Section 3.2 [Escape
+Sequences], page 38) for the single- and double-quote characters, like so:
+$ awk ’BEGIN { print "Here is a single quote <\47>" }’
+Here is a single quote <’>
+$ awk ’BEGIN { print "Here is a double quote <\42>" }’
+Here is a double quote <">
+This works nicely, except that you should comment clearly what the escapes mean.
+A fourth option is to use command-line variable assignment, like this:
+$ awk -v sq="’" ’BEGIN { print "Here is a single quote <" sq ">" }’
+Here is a single quote <’>
+If you really need both single and double quotes in your awk program, it is probably best
+to move it into a separate file, where the shell won’t be part of the picture, and you can say
+what you mean.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------#search pattern and print that line
+
+awk '/foo/ {print $0}' BBS-list
+
+
+##to print lenth of each line 
+
+awk '{print length($0)}' inventory-shipped
+
+#Print the length of the longest line in ‘data’:
+	expand data | awk ’{ if (x < length()) x = length() } END { print "maximum line length is " x }’
+
+The input is processed by the expand utility to change TABs into spaces, so the widths
+compared are actually the right-margin columns.
+# Print every line that has at least one field:
+	awk 'NF > 0' data
+
+#Print seven random numbers from 0 to 100, inclusive:
+	awk ’BEGIN { for (i = 1; i <= 7; i++) print int(101 * rand()) }’
+
+#Print the total number of bytes used by files:
+	ls -l files | awk ’{ x += $5 } END { print "totalbytes: " x }’
+
+# Print the total number of kilobytes used by files:
+	ls -l files | awk ’{ x += $5 } END { print "total K-bytes:", x /1024}'
+# Print a sorted list of the login names of all users:
+	awk -F: ’{ print $1 }’ /etc/passwd | sort
+# Count the lines in a file:
+	awk ’END { print NR }’ data
+# Print the even-numbered lines in the data file:
+	awk ’NR % 2 == 0’ data
+	If you use the expression ‘NR % 2 == 1’ instead,the program would print the odd-number line
+
+
+
+
+
+
