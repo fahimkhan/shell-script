@@ -139,3 +139,6 @@ awk 'BEGIN {RS="";FS="\n"} {print $2,$3}' filename
 #Write a command to rename the files in a directory with "_new" as postfix?
 ls -F | awk '{print "mv "$1" "$1".new"}' | sh
 
+#Delete only file 
+ls -l|awk '$1!~/^drwx/{print $9}'|xargs rm
+

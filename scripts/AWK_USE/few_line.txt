@@ -1,0 +1,9 @@
+Rahul
+Sahil
+Geetika
+Mamta
+Abhishek
+and the expected output should be like :
+Sahil
+Geetika
+Mamta
