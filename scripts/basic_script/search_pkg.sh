@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Script to search package
+
 dpkg -l |cut -d' ' -f1,3|grep -e kicad>temp.txt
 
 ki="ii kicad"

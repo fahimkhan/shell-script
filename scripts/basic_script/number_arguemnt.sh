@@ -22,3 +22,7 @@ echo $@
 ####Last commend status code
 
 echo $?
+
+###PID of script 
+
+echo $$
