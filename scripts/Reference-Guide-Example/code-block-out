@@ -1,0 +1,5 @@
+First line in /etc/fstab is :
+# /etc/fstab: static file system information.
+
+Second line in /etc/fstab is :
+#
