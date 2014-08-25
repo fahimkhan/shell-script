@@ -1,0 +1,7 @@
+
+~ Home directory
+~+ Current working directory 
+~- Previouse Working directory 
+=~ Regular expression match
+^ Begning of line 
+^^ Upper case conversion 
